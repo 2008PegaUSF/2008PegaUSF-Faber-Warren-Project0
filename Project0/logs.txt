@@ -1,0 +1,2 @@
+[2020-08-21T14:06:19,488 FATAL] App - TestFatal
+[2020-08-21T14:06:19,491 ERROR] App - TestError
