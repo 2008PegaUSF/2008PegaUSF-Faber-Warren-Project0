@@ -40,4 +40,14 @@ public abstract class User implements Serializable {
 				+ "\nLegal Name: " + legalName
 				 +"\nAge: " + age;
 	}
+
+	public boolean equals(User other) {
+		return this.username.equals(other.getUsername())
+				&& this.password.equals(other.getPassword())
+				&& this.legalName.equals(other.getLegalName())
+				&& this.age == other.getAge();
+	}
+
 }
+
+

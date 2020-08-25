@@ -54,7 +54,7 @@ public class App {
 		while(output == null) {
 			try {
 				output = Double.parseDouble(in.nextLine());
-				if(output % 0.01 != 0) {
+				if(output < 0) {
 					throw new NumberFormatException();
 				}
 			}
@@ -283,8 +283,8 @@ public class App {
 		boolean hasQuit = false;
 
 		while(!hasQuit) {
-			System.out.println("[Admin Menu]\nAvailable actions:\n1: View all customers\n2: View customer info \n3: View applications\n4: Appove/deny application"
-					+ "+\n5: Withdraw from account\n6: Deposit to account\n7: Transfer between accounts\n8: Open/close account\n9: Quit");
+			System.out.println("[Admin Menu]\nAvailable actions:\n1: View all customers\n2: View customer info \n3: View applications\n4: Aprove/deny application"
+					+ "\n5: Withdraw from account\n6: Deposit to account\n7: Transfer between accounts\n8: Open/close account\n9: Quit");
 			System.out.print(currentUser.getUsername() + ">> ");
 			userInput = validateInputInteger(in);
 			switch(userInput) {
@@ -368,12 +368,10 @@ public class App {
 					}
 					else if(currentUser instanceof Employee) {
 						//Open Employee menu
-						System.out.println("Welcome, employee!");
 						employeeMenu(currentUser,ds,console);
 					}
 					else if(currentUser instanceof Admin) {
 						//Open Admin menu
-						System.out.println("Welcome, admin!");
 						adminMenu(currentUser,ds,console);
 					}
 				}

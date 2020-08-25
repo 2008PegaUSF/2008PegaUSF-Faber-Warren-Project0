@@ -14,7 +14,7 @@ public class Admin extends StaffUser {
 
 	public boolean depositToAccount( DataService ds, Scanner in) {
 			System.out.println("Please enter an account to deposit to:");
-			String s=in.next();			
+			String s=in.nextLine();			
 			BankAccount foundAccount = ds.getAccountByID(s);
 			if(foundAccount == null) {//No account with that ID found
 				System.out.println("No account with that ID was found.");
@@ -24,7 +24,7 @@ public class Admin extends StaffUser {
 				System.out.println("Account balance: " + foundAccount.getBalance());
 				System.out.println("Enter an amount to deposit: ");
 				double depositAmount = validateInputDouble(in);
-				if(foundAccount.doWithdrawal(depositAmount) == -1) {
+				if(foundAccount.doDeposit(depositAmount) == -1) {
 					System.out.println("Invalid deposit amount.");
 					return true;
 				}
@@ -37,7 +37,7 @@ public class Admin extends StaffUser {
 
 	public boolean withdrawFromAccount(DataService ds, Scanner in) {
 			System.out.println("Please enter an account id to withdraw from:");
-			String s=in.next();
+			String s=in.nextLine();
 			BankAccount foundAccount = ds.getAccountByID(s);
 			if(ds.getAccountByID(s) == null) {//No account with that ID found
 				System.out.println("No account with that ID was found.");
@@ -61,7 +61,7 @@ public class Admin extends StaffUser {
 	public boolean transferBetweenAccounts(DataService ds, Scanner in) {
 		
 			System.out.println("Enter an account to send money from: ");
-			String s=in.next();
+			String s=in.nextLine();
 			BankAccount sender = ds.getAccountByID(s);
 			if(sender == null) {
 				System.out.println("That account does not exist.");
@@ -88,26 +88,23 @@ public class Admin extends StaffUser {
 	}
 
 
-
 	public static Double validateInputDouble(Scanner in) {
 		Double output = null;
 		while(output == null) {
 			try {
 				output = Double.parseDouble(in.nextLine());
-				if(output % 0.01 != 0) {
-					throw new NumberFormatException();
-				}
+
 			}
 			catch (NumberFormatException e) {
-				System.out.println("Invalid input. Please enter a number with up to 2 points of decmial precision.");
-				
+				System.out.println("Invalid input. Please enter a number with up to 2 points of decimal precision.");
+				output = null;
 			}
 		}
 		return output;
 	}
 
 
-public void viewAccounts(DataService ds) throws InvalidClassException {
+	public void viewAccounts(DataService ds) throws InvalidClassException {
 		ArrayList<BankAccount> userAccounts = ds.getAccountsOfUser(username, false);
 		int i = 0;
 		System.out.println("Your accounts: ");
@@ -120,7 +117,7 @@ public void viewAccounts(DataService ds) throws InvalidClassException {
 		}
 	}
 
-public boolean openOrCloseAccount(DataService ds, Scanner in) {
+	public boolean openOrCloseAccount(DataService ds, Scanner in) {
 	System.out.println("Enter \"open <ID>\" or \"close <ID>\":");
 	String userInput = in.nextLine();
 	String[] params = userInput.split(" ");

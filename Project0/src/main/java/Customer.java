@@ -29,9 +29,6 @@ public class Customer extends User implements Serializable {
 		while(output == null) {
 			try {
 				output = Double.parseDouble(in.nextLine());
-				if(output % 0.01 != 0) {
-					throw new NumberFormatException();
-				}
 			}
 			catch (NumberFormatException e) {
 				System.out.println("Invalid input. Please enter a number with up to 2 points of decmial precision.");
@@ -51,10 +48,6 @@ public class Customer extends User implements Serializable {
 	
 	public String getPersonalInfo() {
 		return "";
-	}
-	
-	public boolean equals(Customer other) {
-		return this.username.equals(other.getUsername()) && this.password.equals(other.getPassword()) && this.legalName.equals(other.getLegalName()) && this.age == other.getAge();
 	}
 	
 	//Prompts the user to apply for an account. Returns true if a new application was made.

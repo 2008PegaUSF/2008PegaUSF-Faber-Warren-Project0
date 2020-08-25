@@ -113,11 +113,9 @@ public class DataService {
 				BankAccount nextAccount = (BankAccount)oin_bank.readObject();
 				if(nextAccount instanceof BankAccount) {
 					accounts.add(nextAccount);
-					System.out.println(accounts);
 				}
 				else if(nextAccount instanceof JointAccount) {
 					accounts.add(nextAccount);
-					System.out.println(accounts);
 				}
 				else {
 					System.out.println("Invalid object loaded from " + filepath);

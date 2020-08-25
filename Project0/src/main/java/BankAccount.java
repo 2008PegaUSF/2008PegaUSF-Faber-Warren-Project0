@@ -32,7 +32,7 @@ public class BankAccount implements Serializable {
 	}
 	
 	public String toString() {
-		return  ID + "[User: + " + username + " Balance: " + balance  + " Status: " + status +  "]";
+		return  ID + "[User: " + username + " Balance: " + balance  + " Status: " + status +  "]";
 	}
 	
 	public String getID() {
@@ -58,22 +58,27 @@ public class BankAccount implements Serializable {
 		else return -1;	
 	}
 	public double doDeposit(double d){
-		if (d>=0 && d >= 0){
+		if (d>=0){
 			balance+=d;
 			return balance;
 		}
-		else return -1;
+		else {
+			return -1;
+		}
 	}
+	
 	public double doWithdrawal(double d){
-		if (balance-d>=0 && d >= 0){
+		if (balance-d >=0 && d >= 0){
 			balance-=d;
 			return balance;
 		}
-		else return -1;
+		else {
+			return -1;
+		}
 	} 
 	
 	public boolean doTransfer(double amount, BankAccount other) {
-		if (balance>=amount){
+		if (balance>=amount && amount > 0 && this != other){
 			balance-=amount;
 			other.balance+=amount;
 			System.out.println("Funds Transfered");

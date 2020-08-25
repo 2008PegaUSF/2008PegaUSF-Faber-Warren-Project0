@@ -74,10 +74,10 @@ public class TestCases {
 		fout3.close();
 		
 		FileOutputStream fout4 = new FileOutputStream("src/test/resources/Applications.txt");
-		ObjectOutputStream oout4 = new ObjectOutputStream(fout3);
+		ObjectOutputStream oout4 = new ObjectOutputStream(fout4);
 		
 		for(BankAccount a : applications) {
-			oout2.writeObject(a);
+			oout4.writeObject(a);
 		}
 		
 		oout4.close();
@@ -230,6 +230,9 @@ public class TestCases {
 		Customer cust4 = new Customer("customer4", "password4", "Guy Four", 40);
 		Employee emp1 = new Employee("employee1", "Worker Man", "1234567895", 50);
 		Admin adm1 = new Admin("admin1", "passwordA", "Admin Boss", 60);
+		
+		System.out.println(ds.getUsers());
+		
 		User[] users = {cust1, cust2, cust3, cust4, emp1, adm1};
 		boolean isSame = true;
 		for(int i = 0; i < users.length; i++) {
@@ -268,6 +271,102 @@ public class TestCases {
 		Assert.assertTrue(isSame);
 	}
 	
+	//Requires loadAccounts to be functional, though all loading methods has already been tested to work properly
+	@Test
+	public void TestSaveAccounts() {
+		DataService ds1 = new DataService();
+		DataService ds2 = new DataService();
+		
+		ds1.loadBankAccounts("src/test/resources/Accounts.txt");
+		ds1.saveBankAccounts("src/test/resources/Accounts.txt");
+		
+		ds2.loadBankAccounts("src/test/resources/Accounts.txt");
+		
+		BankAccount bacc1 = new BankAccount("C1", "customer1", 100f, "active");
+		BankAccount bacc2 = new BankAccount("C2", "customer2", 100f, "active");
+		BankAccount bacc3 = new BankAccount("C3", "customer3", 100f, "active");
+		BankAccount bacc4 = new BankAccount("C4", "customer4", 100f, "active");
+		
+		JointAccount jacc1 = new JointAccount("J1","customer1","customer2",100f,"active");
+		JointAccount jacc2 = new JointAccount("J2","customer1","customer3",100f,"active");
+		JointAccount jacc3 = new JointAccount("J1","customer2","customer3",100f,"active");
+		JointAccount jacc4 = new JointAccount("J2","customer3","customer4",100f,"active");
+		
+		BankAccount[] accounts = {bacc1, bacc2, bacc3, bacc4, jacc1, jacc2, jacc3, jacc4};
+		boolean isSame = true;
+		for(int i = 0; i < accounts.length; i++) {
+			if(!accounts[i].equals(ds2.getAccounts().get(i))) {
+				isSame = false;
+			}
+		}
+		Assert.assertTrue(isSame);
+	}
 	
+	@Test
+	public void TestSaveUsers() {
+		DataService ds1 = new DataService();
+		DataService ds2 = new DataService();
+		
+		ds1.loadUsers("src/test/resources/Users.txt");
+		ds1.saveUsers("src/test/resources/Users.txt");
+		
+		ds2.loadUsers("src/test/resources/Users.txt");
+		
+		Customer cust1 = new Customer("customer1", "password1", "Guy One", 10);
+		Customer cust2 = new Customer("customer2", "password2", "Guy Two", 20);
+		Customer cust3 = new Customer("customer3", "password3", "Guy Three", 30);
+		Customer cust4 = new Customer("customer4", "password4", "Guy Four", 40);
+		Employee emp1 = new Employee("employee1", "Worker Man", "1234567895", 50);
+		Admin adm1 = new Admin("admin1", "passwordA", "Admin Boss", 60);
+		
+		System.out.println(ds2.getUsers());
+		
+		User[] users = {cust1, cust2, cust3, cust4, emp1, adm1};
+		boolean isSame = true;
+		for(int i = 0; i < users.length; i++) {
+			if(!users[i].equals(ds2.getUsers().get(i))) {
+				isSame = false;
+			}
+		}
+		Assert.assertTrue(isSame);
+	}
+	
+	@Test
+	public void TestSaveNumAccounts() {
+		DataService ds1 = new DataService();
+		DataService ds2 = new DataService();
+		
+		ds1.loadNumAccounts("src/test/resources/IDCounts.txt");
+		ds1.saveNumAccounts("src/test/resources/IDCounts.txt");
+		
+		ds2.loadNumAccounts("src/test/resources/IDCounts.txt");
+		Assert.assertTrue(ds2.getNumBankAccounts() == 6 && ds2.getNumJointAccounts() == 6);
+	}
+	
+	@Test
+	public void TestSaveApplications() {
+		DataService ds1 = new DataService();
+		DataService ds2 = new DataService();
+		
+		ds1.loadApplications("src/test/resources/Applications.txt");
+		ds1.saveApplications("src/test/resources/Applications.txt");
+		
+		ds2.loadApplications("src/test/resources/Applications.txt");
+		
+		BankAccount appl1 = new BankAccount("C1", "customer1", 100f, "pending");
+		BankAccount appl2 = new BankAccount("C2", "customer2", 100f, "pending");
+		BankAccount appl3 = new JointAccount("C3", "customer3", "customer4", 100f, "pending");
+		BankAccount appl4 = new JointAccount("C4", "customer4", "customer3", 100f, "pending");
+		
+		BankAccount[] applications = {appl1,appl2,appl3,appl4};
+		
+		boolean isSame = true;
+		for(int i = 0; i < applications.length; i++) {
+			if(!applications[i].equals(ds2.getApplications().get(i))) {
+				isSame = false;
+			}
+		}
+		Assert.assertTrue(isSame);
+	}
 	
 }
