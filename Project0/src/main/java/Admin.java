@@ -12,12 +12,13 @@ public class Admin extends StaffUser {
 		return "Admin[" + username + "]";
 	}
 
-	public void depositToAccount( DataService ds, Scanner in) {
+	public boolean depositToAccount( DataService ds, Scanner in) {
 			System.out.println("Please enter an account to deposit to:");
 			String s=in.next();			
 			BankAccount foundAccount = ds.getAccountByID(s);
 			if(foundAccount == null) {//No account with that ID found
 				System.out.println("No account with that ID was found.");
+				return false;
 			}
 			else {//Account with that ID found
 				System.out.println("Account balance: " + foundAccount.getBalance());
@@ -25,19 +26,22 @@ public class Admin extends StaffUser {
 				double depositAmount = validateInputDouble(in);
 				if(foundAccount.doWithdrawal(depositAmount) == -1) {
 					System.out.println("Invalid deposit amount.");
+					return true;
 				}
 				else {
 					System.out.println("Deposit completed. New account balance: " + foundAccount.getBalance());
+					return true;
 				}
 			}
 		}
 
-	public void withdrawFromAccount(DataService ds, Scanner in) {
+	public boolean withdrawFromAccount(DataService ds, Scanner in) {
 			System.out.println("Please enter an account id to withdraw from:");
 			String s=in.next();
 			BankAccount foundAccount = ds.getAccountByID(s);
 			if(ds.getAccountByID(s) == null) {//No account with that ID found
 				System.out.println("No account with that ID was found.");
+				return false;
 			}
 			else {//Account with that ID was found
 				System.out.println("Account balance: " + foundAccount.getBalance());
@@ -45,36 +49,40 @@ public class Admin extends StaffUser {
 				double withdrawalAmount = validateInputDouble(in);
 				if(foundAccount.doWithdrawal(withdrawalAmount) == -1) {
 					System.out.println("Invalid withdrawal amount.");
+					return false;
 				}
 				else {
 					System.out.println("Withdraw completed. New account balance: " + foundAccount.getBalance());
+					return true;
 				}
 			}
 	}
 
-	public void transferBetweenAccounts(DataService ds, Scanner in) {
+	public boolean transferBetweenAccounts(DataService ds, Scanner in) {
 		
 			System.out.println("Enter an account to send money from: ");
 			String s=in.next();
 			BankAccount sender = ds.getAccountByID(s);
 			if(sender == null) {
 				System.out.println("That account does not exist.");
-				return;
+				return false;
 			}
 			System.out.println("Enter an account to send money to:");
 			BankAccount recipient = ds.getAccountByID(in.nextLine());
 			if(recipient == null) {
 				System.out.println("That account does not exist.");
-				return;
+				return false;
 			}
 			System.out.println("Sender account balance: " + sender.getBalance());
 			System.out.println("Enter an amount to transfer:");
 			double transferAmount = validateInputDouble(in);
 			if(sender.doTransfer(transferAmount, recipient)) {
 				System.out.println("Transfer complete. Sender's new account balance: " +  sender.getBalance());
+				return true;
 			}
 			else {
 				System.out.println("Invalid amount.");
+				return false;
 			}
 			
 	}
@@ -112,7 +120,7 @@ public void viewAccounts(DataService ds) throws InvalidClassException {
 		}
 	}
 
-public void openOrCloseAccount(DataService ds, Scanner in) {
+public boolean openOrCloseAccount(DataService ds, Scanner in) {
 	System.out.println("Enter \"open <ID>\" or \"close <ID>\":");
 	String userInput = in.nextLine();
 	String[] params = userInput.split(" ");
@@ -120,24 +128,27 @@ public void openOrCloseAccount(DataService ds, Scanner in) {
 	if(params.length != 2) {
 		System.out.println("Invalid command.");
 		in.close();
-		return;
+		return false;
 	}
 	
-	BankAccount toManage = ds.getAccountByID(in.nextLine());
+	BankAccount toManage = ds.getAccountByID(params[1]);
 	if(toManage == null) {
 		System.out.println("Account not found.");
 		in.close();
-		return;
+		return false;
 	}
 	
 	if(params[0].equalsIgnoreCase("open")) {
 		toManage.open();
 		System.out.println("Account " + toManage.getID() + "opened.");
+		return true;
 	}
 	else if(params[0].equalsIgnoreCase("close")) {
 		toManage.close();
 		System.out.println("Account " + toManage.getID() + "closed.");
+		return true;
 	}
+	return false;
 }
 
 }

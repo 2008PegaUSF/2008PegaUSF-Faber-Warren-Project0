@@ -8,31 +8,38 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class DataService {
-	
+	//Declaring the arraylists which hold our users and account information
 	private ArrayList<User> users;
 	private ArrayList<BankAccount> accounts;
 	private ArrayList<BankAccount> applications;
 	int numBankAccounts;
 	int numJointAccounts;
-	
+	//the constructor for our dataservice class
 	public DataService() {
 		users = new ArrayList<User>();
 		accounts = new ArrayList<BankAccount>();
 		applications = new ArrayList<BankAccount>();
 	}
-	
+	//Getter method for bank accounts
 	public ArrayList<BankAccount> getAccounts() {
 		return accounts;
 	}
-	
+	//Getter method for applications
 	public ArrayList<BankAccount> getApplications() {
 		return applications;
 	}
-	
+	//Getter method for users
  	public ArrayList<User> getUsers() {
 		return users;
 	}
 	
+ 	public int getNumBankAccounts() {
+ 		return numBankAccounts;
+ 	}
+ 	
+ 	public int getNumJointAccounts() {
+ 		return numJointAccounts;
+ 	}
 	
 	//Read how many BankAccounts and how many JointAccounts have been made from a file.
 	public void loadNumAccounts(String filepath) {
@@ -67,7 +74,7 @@ public class DataService {
 			e.printStackTrace();
 		}
 	}
-	
+	//Saves an account to a file
 	public void saveNumAccounts(String filepath) {
 		FileOutputStream fout;
 		ObjectOutputStream oout;
@@ -395,5 +402,6 @@ public class DataService {
 			return true;
 		}
 	}
+
 	
 }

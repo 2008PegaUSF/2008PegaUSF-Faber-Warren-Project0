@@ -29,13 +29,17 @@ public class TestCases {
 		Customer cust2 = new Customer("customer2", "password2", "Guy Two", 20);
 		Customer cust3 = new Customer("customer3", "password3", "Guy Three", 30);
 		Customer cust4 = new Customer("customer4", "password4", "Guy Four", 40);
-		
 		Employee emp1 = new Employee("employee1", "Worker Man", "1234567895", 50);
-		
 		Admin adm1 = new Admin("admin1", "passwordA", "Admin Boss", 60);
+		
+		BankAccount appl1 = new BankAccount("C1", "customer1", 100f, "pending");
+		BankAccount appl2 = new BankAccount("C2", "customer2", 100f, "pending");
+		BankAccount appl3 = new JointAccount("C3", "customer3", "customer4", 100f, "pending");
+		BankAccount appl4 = new JointAccount("C4", "customer4", "customer3", 100f, "pending");
 		
 		BankAccount[] accounts = {bacc1, bacc2, bacc3, bacc4, jacc1, jacc2, jacc3, jacc4};
 		User[] users = {cust1,cust2,cust3,cust4,emp1,adm1};
+		BankAccount[] applications = {appl1,appl2,appl3,appl4};
 		
 		FileOutputStream fout = new FileOutputStream("src/test/resources/Accounts.txt");
 		ObjectOutputStream oout = new ObjectOutputStream(fout);
@@ -60,15 +64,24 @@ public class TestCases {
 		
 		
 		
-		FileOutputStream fout3 = new FileOutputStream("src/test/resources/Applications.txt");
+		FileOutputStream fout3 = new FileOutputStream("src/test/resources/IDCounts.txt");
 		ObjectOutputStream oout3 = new ObjectOutputStream(fout3);
 		
-		oout3.writeInt(4);
-		oout3.writeInt(4);
+		oout3.writeInt(6);
+		oout3.writeInt(6);
 		
 		oout3.close();
 		fout3.close();
 		
+		FileOutputStream fout4 = new FileOutputStream("src/test/resources/Applications.txt");
+		ObjectOutputStream oout4 = new ObjectOutputStream(fout3);
+		
+		for(BankAccount a : applications) {
+			oout2.writeObject(a);
+		}
+		
+		oout4.close();
+		fout4.close();
 		
 		}
 		catch(IOException e) {
@@ -205,4 +218,56 @@ public class TestCases {
 		}
 		Assert.assertTrue(isSame);
 	}
+
+	@Test
+	public void TestLoadUsers() {
+		DataService ds = new DataService();
+		ds.loadUsers("src/test/resources/Users.txt");
+		
+		Customer cust1 = new Customer("customer1", "password1", "Guy One", 10);
+		Customer cust2 = new Customer("customer2", "password2", "Guy Two", 20);
+		Customer cust3 = new Customer("customer3", "password3", "Guy Three", 30);
+		Customer cust4 = new Customer("customer4", "password4", "Guy Four", 40);
+		Employee emp1 = new Employee("employee1", "Worker Man", "1234567895", 50);
+		Admin adm1 = new Admin("admin1", "passwordA", "Admin Boss", 60);
+		User[] users = {cust1, cust2, cust3, cust4, emp1, adm1};
+		boolean isSame = true;
+		for(int i = 0; i < users.length; i++) {
+			if(!users[i].equals(ds.getUsers().get(i))) {
+				isSame = false;
+			}
+		}
+		Assert.assertTrue(isSame);
+	}
+	
+	@Test
+	public void TestLoadNumAccounts() {
+		DataService ds = new DataService();
+		ds.loadNumAccounts("src/test/resources/IDCounts.txt");
+		Assert.assertTrue(ds.getNumBankAccounts() == 6 && ds.getNumJointAccounts() == 6);
+	}
+	
+	@Test
+	public void TestLoadApplications() {
+		DataService ds = new DataService();
+		ds.loadApplications("src/test/resources/Applications.txt");
+		
+		BankAccount appl1 = new BankAccount("C1", "customer1", 100f, "pending");
+		BankAccount appl2 = new BankAccount("C2", "customer2", 100f, "pending");
+		BankAccount appl3 = new JointAccount("C3", "customer3", "customer4", 100f, "pending");
+		BankAccount appl4 = new JointAccount("C4", "customer4", "customer3", 100f, "pending");
+		
+		BankAccount[] applications = {appl1,appl2,appl3,appl4};
+		
+		boolean isSame = true;
+		for(int i = 0; i < applications.length; i++) {
+			if(!applications[i].equals(ds.getApplications().get(i))) {
+				isSame = false;
+			}
+		}
+		Assert.assertTrue(isSame);
+	}
+	
+	
+	
 }

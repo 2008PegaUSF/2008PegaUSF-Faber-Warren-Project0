@@ -292,18 +292,37 @@ public class App {
 				System.out.println(((Admin) currentUser).viewAllCustomers(ds));
 				break;
 			case 2://View customer info
+				((Admin) currentUser).viewCustomerInfo(ds, in);
 				break;
 			case 3://View applications
+				System.out.println(((Admin) currentUser).viewAllApplications(ds));
 				break;
 			case 4://Approve/deny application
+				if(((Admin) currentUser).ApproveOrDenyApplication(ds, in)) {
+				ds.saveApplications("src/main/resources/Applications.txt");
+				ds.saveBankAccounts("src/main/resources/Accounts.txt");
+				}
 				break;
 			case 5://Withdraw from account
+				if(((Admin) currentUser).withdrawFromAccount(ds, in)) {
+					ds.saveBankAccounts("src/main/resources/Accounts.txt");
+				}
 				break;
 			case 6://Deposit to account
+				if (((Admin) currentUser).depositToAccount(ds, in));
+				{
+					ds.saveBankAccounts("src/main/resources/Accounts.txt");
+				}
 				break;
 			case 7://Transfer between accounts
+				if(((Admin) currentUser).transferBetweenAccounts(ds, in)) {
+					ds.saveBankAccounts("src/main/resources/Accounts.txt");
+				}
 				break;
 			case 8://Open/close account
+			    if(((Admin) currentUser).openOrCloseAccount(ds,in)){
+					ds.saveBankAccounts("src/main/resources/Accounts.txt");
+				}
 				break;
 			case 9://Quit
 				hasQuit = true;
@@ -387,374 +406,4 @@ public class App {
 
 	}//end main
 }//end class
-// ===================================================================================== Scrap Code Below ================================================================================
-
-/*
-public static User register(DataService ds) {
-	Scanner in = new Scanner(System.in);
-	String uName = "";
-	while (uName == "")
-	{
-		System.out.println("Please enter your username");
-		String temp=in.nextLine();	
-		if(ds.getUsers().contains(temp)){System.out.println("That username is not avaiable");
-
-		}
-		else {uName=temp;}
-
-
-	}		
-
-	System.out.println("Please enter your password");
-	String password=in.nextLine();
-
-	System.out.println("Please enter your legal name");
-	String lName=in.nextLine();
-
-	System.out.println("Please enter your age");
-	int age=in.nextInt();
-
-
-	ds.createCustomer(uName,password,lName,age);		
-
-	return 0;
-}
- */
-
-//1: Login 2: Register 3: Quit
-/*
-System.out.println("Hello, thank you for choosing Faber and Warren. Please enter 1 to login or 2 to register");
-lInt=console.nextInt();
-if (lInt==1){//Login
-	System.out.println("Please enter your username");
-
-
-}
-else if(lInt==2){//Register
-	///register logic
-	register(ds);
-}
-else if (lInt==3){//Let the code pass through the login/register block
-
-}
-
-else {
-	System.out.println("Something went wrong");
-}
- */
-
-//if (login goes well and is customer){
-
-//logic for checking user name goes here -->>
-
-//	System.out.printkln("Account name: " + customer1.getName());
-
-//Previous code for the app console
-/*
-		System.out.println("1. Apply for a Bank Account");	
-		System.out.println("2. View Account Information");	
-		System.out.println("3. View Balance Information");	
-		System.out.println("4. Deposit Money into an Account");	
-		System.out.println("5. Withdraw Money from an Account");	
-		System.out.println("6.Transfer Money from an Account");	
-		System.out.println("7. Exit the Application");
-
-		int choice=console.nextInt();
-
-		switch(choice){
-
-		case 1:
-
-		//create an new application logic goes here ----->
-			//Choice 1: Apply for Individual Account
-			//Choice 2: Appl
-			System.out.println("You have successfully applied for an account");
-
-		break;
-
-
-		case 2:
-
-		//
-		break;
-
-		case 3:
-
-
-			//double b=getBalance(); -----> not sure how to call this; 
-			//System.out.println("Your balance in the specified account is: " +b);
-
-		break;
-
-		case 4:
-
-			System.out.println("How much money would you like to deposit?");
-			//customer1.doDeposit(console.nextDouble());
-			//System.out.println("Money added. Your balance is now: " +customer1.getBalance());
-
-		break;
-
-		case 5:
-
-		System.out.println("How much money would you like to withdrawal?");
-			//customer1.doWithdraw(console.nextDouble());
-			//System.out.println("Money withdrawn. Your balance is now: " +customer1.getBalance());
-
-		break;
-
-		case 6:
-
-			System.out.println("Enter the account number you would like to tranfer to");
-			String otherAccount=console.next();
-			System.out.println("Enter the amount you would like to transfer.");
-
-		//	**** Transfer Logic Goes Here---->
-
-
-		break;
-
-		case 7:
-
-			System.out.println("Thank you for visiting Faber and Warren");
-
-		break;
-
-	//	}
-
-	//else {
-
-}
-
-
-
-
-
-
-
-
-
-
-		console.close();
-	}
-
-
-}
- */
-
-
-/* public class BankApp{
-	public static void main(String[] args){
-		Scanner console=new Scanner(System.in);
-		System.out.println("Hello, thank you for choosing Faber and Warren. Please enter your user name"
- * *Account customer1= new Account();	
- **logic for checking user name
-	System.out.printkln("Account name: " + customer1.getName());
-
-
-
-		System.out.println("1. Apply for a Bank Account");	
-		System.out.println("2. View Account Information");	
-		System.out.println("3. View Balance Information");	
-		System.out.println("4. Deposit Money into an Account");	
-		System.out.println("5. Withdraw Money from an Account");	
-		System.out.println("6.Transfer Money from an Account");	
-		System.out.println("7. Exit the Application");
-
-		int choice=console.nextInt();
-
-		switch(choice){
-
-		case 1:
-
- ***	create an new application logic
-			System.out.println("You have successfully applied for an account");
-
-		break;
-
-
-		case 2:
-
-			System.out.print(customer1.getName()+customer1.getAccount());
-
-		break;
-
-		case 3:
-
-			System.out.println("Please enter the account number");
-			int n=console.next();
- ***	double=getBalance(n); 
-			System.out.println("Your balance in the specified account is: " +b);
-
-		break;
-
-		case 4:
-
-			System.out.println("How much money would you like to deposit?")
-			customer1.doDeposit(console.nextDouble());
-			System.out.println("Money added. Your balance is now: " +customer1.getBalance());
-
-		break;
-
-		case 5:
-
-		System.out.println("How much money would you like to withdrawal?")
-			customer1.doWithdraw(console.nextDouble());
-			System.out.println("Money withdrawn. Your balance is now: " +customer1.getBalance());
-
-		break;
-
-		case 6:
-
-			System.out.println("Enter the account number you would like to tranfer to");
-			String otherAccount=console.next();
-			System.out.println("Enter the amount you would like to transfer.");
- ****
- ****
- ****
-
-		break;
-
-		case 7:
-
-			System.out.println("Thank you for visit Faber and Warren");
-
-		break;
-
-}
-?***********************************************************************************************
-?***********************************************************************************************
-EmployeeUI
-
-System.out.println("Hello, thank you for choosing Faber and Warren. Please enter your user name"
- * *Account customer1= new Account();	
- **logic for checking user name
-	System.out.printkln("Account name: " + customer1.getName());
-
-
-
-		System.out.println("1. View a Customers Account Information");	
-		System.out.println("2. View a Bank Accounts Information");	
-		System.out.println("3. Manage Applications");	
-		System.out.println("4. Exit the Application");	
-
-
-		int choice=console.nextInt();
-
-		switch(choice){
-
-		case 1:
-
-		System.out.println("Please enter the Username of the Customer");
-		employee1.getAccount(console.next());
-
-
-		break;
-
-
-		case 2:
-			System.out.println("Please enter the Bank Account ID")
- ********System.out.println(employee1.getID()+BankAccount.getBalance
-
-		break;
-
-		case 3:
-
- *Logic For Approving and Denying Accounts
- *
- *
-
-		break;
-
-		case 4:
-
-			System.out.println("Thank you for visit Faber and Warren");
-
-		break;
-
-
-
-}
-
-?************************************************************************
-?************************************************************************
-Bank Admin UI
-
-
-		System.out.println("1. Approve or Deny Accounts");	
-		System.out.println("2. View Account Information");	
-		System.out.println("3. View Balance Information");	
-		System.out.println("4. Deposit Money into an Account");	
-		System.out.println("5. Withdraw Money from an Account");	
-		System.out.println("6. Transfer Money from an Account");
-		System.out.println("7. Delete an Account
-		System.out.println("8. Exit the Application");
-
-		int choice=console.nextInt();
-
-		switch(choice){
-
-		case 1:
-
- ***	Approve or Deny a new application logic
-
-
-		break;
-
-
-		case 2:
-
-			System.out.print(customer1.getName()+customer1.getAccount());
-
-		break;
-
-		case 3:
-
-			System.out.println("Please enter the account number");
-			int n=console.next();
- ***	double=getBalance(n); 
-			System.out.println("Your balance in the specified account is: " +b);
-
-		break;
-
-		case 4:
-
-			System.out.println("How much money would you like to deposit?")
-			customer1.doDeposit(console.nextDouble());
-			System.out.println("Money added. Your balance is now: " +customer1.getBalance());
-
-		break;
-
-		case 5:
-
-		System.out.println("How much money would you like to withdrawal?")
-			customer1.doWithdraw(console.nextDouble());
-			System.out.println("Money withdrawn. Your balance is now: " +customer1.getBalance());
-
-		break;
-
-		case 6:**** requires code for specifing which account to which account
-
-			System.out.println("Enter the account number you would like to tranfer to");
-			String otherAccount=console.next();
-			System.out.println("Enter the amount you would like to transfer.");
- ****
- ****
- ****
-
-		break;
-
-		case 7:
- **** logic for deleting an account
-
-		case 8:
-
-			System.out.println("Thank you for visit Faber and Warren");
-
-		break;
-
-
-
- */ 
-
-
 
