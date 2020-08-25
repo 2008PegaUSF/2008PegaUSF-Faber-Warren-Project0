@@ -298,12 +298,12 @@ public class DataService {
 		for(int i = 0; i < accounts.size(); i++) {
 			Object currentAccount = accounts.get(i);
 			if(currentAccount instanceof BankAccount) {
-				if(((BankAccount) currentAccount).getUsername().equals(username) && !(((BankAccount) currentAccount).getStatus() != "active" && !includeInactive)) {
+				if(((BankAccount) currentAccount).getUsername().equals(username) && (((BankAccount) currentAccount).getStatus().equals("active") || includeInactive)) {
 					customerAccounts.add((BankAccount) currentAccount);
 				}
 			}
 			else if(currentAccount instanceof JointAccount) {
-				if(((JointAccount) currentAccount).getUsername().equals(username) && !(((JointAccount) currentAccount).getStatus() != "active" && !includeInactive)) {
+				if(((JointAccount) currentAccount).getUsername().equals(username) && ((BankAccount) currentAccount).getStatus().equals("active") || includeInactive) {
 					customerAccounts.add((JointAccount) currentAccount);
 				}
 			}

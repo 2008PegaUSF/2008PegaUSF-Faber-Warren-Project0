@@ -2,8 +2,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -19,11 +21,12 @@ public class TestCases {
 		BankAccount bacc2 = new BankAccount("C2", "customer2", 100f, "active");
 		BankAccount bacc3 = new BankAccount("C3", "customer3", 100f, "active");
 		BankAccount bacc4 = new BankAccount("C4", "customer4", 100f, "active");
+		BankAccount bacc5 = new BankAccount("C5","customer1",100f, "cancelled");
 		
 		JointAccount jacc1 = new JointAccount("J1","customer1","customer2",100f,"active");
 		JointAccount jacc2 = new JointAccount("J2","customer1","customer3",100f,"active");
-		JointAccount jacc3 = new JointAccount("J1","customer2","customer3",100f,"active");
-		JointAccount jacc4 = new JointAccount("J2","customer3","customer4",100f,"active");
+		JointAccount jacc3 = new JointAccount("J3","customer2","customer3",100f,"active");
+		JointAccount jacc4 = new JointAccount("J4","customer3","customer4",100f,"active");
 		
 		Customer cust1 = new Customer("customer1", "password1", "Guy One", 10);
 		Customer cust2 = new Customer("customer2", "password2", "Guy Two", 20);
@@ -32,12 +35,12 @@ public class TestCases {
 		Employee emp1 = new Employee("employee1", "Worker Man", "1234567895", 50);
 		Admin adm1 = new Admin("admin1", "passwordA", "Admin Boss", 60);
 		
-		BankAccount appl1 = new BankAccount("C1", "customer1", 100f, "pending");
-		BankAccount appl2 = new BankAccount("C2", "customer2", 100f, "pending");
-		BankAccount appl3 = new JointAccount("C3", "customer3", "customer4", 100f, "pending");
-		BankAccount appl4 = new JointAccount("C4", "customer4", "customer3", 100f, "pending");
+		BankAccount appl1 = new BankAccount("C6", "customer1", 100f, "pending");
+		BankAccount appl2 = new BankAccount("C7", "customer2", 100f, "pending");
+		BankAccount appl3 = new JointAccount("J5", "customer3", "customer4", 100f, "pending");
+		BankAccount appl4 = new JointAccount("J6", "customer4", "customer3", 100f, "pending");
 		
-		BankAccount[] accounts = {bacc1, bacc2, bacc3, bacc4, jacc1, jacc2, jacc3, jacc4};
+		BankAccount[] accounts = {bacc1, bacc2, bacc3, bacc4, bacc5, jacc1, jacc2, jacc3, jacc4};
 		User[] users = {cust1,cust2,cust3,cust4,emp1,adm1};
 		BankAccount[] applications = {appl1,appl2,appl3,appl4};
 		
@@ -67,7 +70,7 @@ public class TestCases {
 		FileOutputStream fout3 = new FileOutputStream("src/test/resources/IDCounts.txt");
 		ObjectOutputStream oout3 = new ObjectOutputStream(fout3);
 		
-		oout3.writeInt(6);
+		oout3.writeInt(7);
 		oout3.writeInt(6);
 		
 		oout3.close();
@@ -203,13 +206,15 @@ public class TestCases {
 		BankAccount bacc2 = new BankAccount("C2", "customer2", 100f, "active");
 		BankAccount bacc3 = new BankAccount("C3", "customer3", 100f, "active");
 		BankAccount bacc4 = new BankAccount("C4", "customer4", 100f, "active");
+		BankAccount bacc5 = new BankAccount("C5", "customer1",100f, "cancelled");
 		
 		JointAccount jacc1 = new JointAccount("J1","customer1","customer2",100f,"active");
 		JointAccount jacc2 = new JointAccount("J2","customer1","customer3",100f,"active");
-		JointAccount jacc3 = new JointAccount("J1","customer2","customer3",100f,"active");
-		JointAccount jacc4 = new JointAccount("J2","customer3","customer4",100f,"active");
+		JointAccount jacc3 = new JointAccount("J3","customer2","customer3",100f,"active");
+		JointAccount jacc4 = new JointAccount("J4","customer3","customer4",100f,"active");
 		
-		BankAccount[] accounts = {bacc1, bacc2, bacc3, bacc4, jacc1, jacc2, jacc3, jacc4};
+		
+		BankAccount[] accounts = {bacc1, bacc2, bacc3, bacc4, bacc5, jacc1, jacc2, jacc3, jacc4};
 		boolean isSame = true;
 		for(int i = 0; i < accounts.length; i++) {
 			if(!accounts[i].equals(ds.getAccounts().get(i))) {
@@ -247,7 +252,7 @@ public class TestCases {
 	public void TestLoadNumAccounts() {
 		DataService ds = new DataService();
 		ds.loadNumAccounts("src/test/resources/IDCounts.txt");
-		Assert.assertTrue(ds.getNumBankAccounts() == 6 && ds.getNumJointAccounts() == 6);
+		Assert.assertTrue(ds.getNumBankAccounts() == 7 && ds.getNumJointAccounts() == 6);
 	}
 	
 	@Test
@@ -255,10 +260,10 @@ public class TestCases {
 		DataService ds = new DataService();
 		ds.loadApplications("src/test/resources/Applications.txt");
 		
-		BankAccount appl1 = new BankAccount("C1", "customer1", 100f, "pending");
-		BankAccount appl2 = new BankAccount("C2", "customer2", 100f, "pending");
-		BankAccount appl3 = new JointAccount("C3", "customer3", "customer4", 100f, "pending");
-		BankAccount appl4 = new JointAccount("C4", "customer4", "customer3", 100f, "pending");
+		BankAccount appl1 = new BankAccount("C6", "customer1", 100f, "pending");
+		BankAccount appl2 = new BankAccount("C7", "customer2", 100f, "pending");
+		BankAccount appl3 = new JointAccount("J5", "customer3", "customer4", 100f, "pending");
+		BankAccount appl4 = new JointAccount("J6", "customer4", "customer3", 100f, "pending");
 		
 		BankAccount[] applications = {appl1,appl2,appl3,appl4};
 		
@@ -286,13 +291,15 @@ public class TestCases {
 		BankAccount bacc2 = new BankAccount("C2", "customer2", 100f, "active");
 		BankAccount bacc3 = new BankAccount("C3", "customer3", 100f, "active");
 		BankAccount bacc4 = new BankAccount("C4", "customer4", 100f, "active");
+		BankAccount bacc5 = new BankAccount("C5", "customer1",100f, "cancelled");
 		
 		JointAccount jacc1 = new JointAccount("J1","customer1","customer2",100f,"active");
 		JointAccount jacc2 = new JointAccount("J2","customer1","customer3",100f,"active");
-		JointAccount jacc3 = new JointAccount("J1","customer2","customer3",100f,"active");
-		JointAccount jacc4 = new JointAccount("J2","customer3","customer4",100f,"active");
+		JointAccount jacc3 = new JointAccount("J3","customer2","customer3",100f,"active");
+		JointAccount jacc4 = new JointAccount("J4","customer3","customer4",100f,"active");
 		
-		BankAccount[] accounts = {bacc1, bacc2, bacc3, bacc4, jacc1, jacc2, jacc3, jacc4};
+		
+		BankAccount[] accounts = {bacc1, bacc2, bacc3, bacc4, bacc5, jacc1, jacc2, jacc3, jacc4};
 		boolean isSame = true;
 		for(int i = 0; i < accounts.length; i++) {
 			if(!accounts[i].equals(ds2.getAccounts().get(i))) {
@@ -340,7 +347,7 @@ public class TestCases {
 		ds1.saveNumAccounts("src/test/resources/IDCounts.txt");
 		
 		ds2.loadNumAccounts("src/test/resources/IDCounts.txt");
-		Assert.assertTrue(ds2.getNumBankAccounts() == 6 && ds2.getNumJointAccounts() == 6);
+		Assert.assertTrue(ds2.getNumBankAccounts() == 7 && ds2.getNumJointAccounts() == 6);
 	}
 	
 	@Test
@@ -353,10 +360,10 @@ public class TestCases {
 		
 		ds2.loadApplications("src/test/resources/Applications.txt");
 		
-		BankAccount appl1 = new BankAccount("C1", "customer1", 100f, "pending");
-		BankAccount appl2 = new BankAccount("C2", "customer2", 100f, "pending");
-		BankAccount appl3 = new JointAccount("C3", "customer3", "customer4", 100f, "pending");
-		BankAccount appl4 = new JointAccount("C4", "customer4", "customer3", 100f, "pending");
+		BankAccount appl1 = new BankAccount("C6", "customer1", 100f, "pending");
+		BankAccount appl2 = new BankAccount("C7", "customer2", 100f, "pending");
+		BankAccount appl3 = new JointAccount("J5", "customer3", "customer4", 100f, "pending");
+		BankAccount appl4 = new JointAccount("J6", "customer4", "customer3", 100f, "pending");
 		
 		BankAccount[] applications = {appl1,appl2,appl3,appl4};
 		
@@ -368,5 +375,88 @@ public class TestCases {
 		}
 		Assert.assertTrue(isSame);
 	}
+	
+	@Test
+	public void TestGetAccountsOfUserNoCancelled() throws InvalidClassException {
+		DataService ds = new DataService();
+		ds.loadBankAccounts("src/test/resources/Accounts.txt");
+		ds.loadUsers("src/test/resources/Users.txt");
+		
+		
+		BankAccount bacc1 = new BankAccount("C1", "customer1", 100f, "active");
+		JointAccount jacc1 = new JointAccount("J1","customer1","customer2",100f,"active");
+		JointAccount jacc2 = new JointAccount("J2","customer1","customer3",100f,"active");
+		
+		ArrayList<BankAccount> foundAccounts = ds.getAccountsOfUser("customer1", false);
+		BankAccount accs[] = {bacc1, jacc1, jacc2};
+		
+		System.out.println("Found accounts of customer1: " + foundAccounts);
+		
+		boolean isSame = true;
+		for(int i = 0; i < accs.length; i++) {
+			if(!accs[i].equals(foundAccounts.get(i))) {
+				isSame = false;
+			}
+		}
+		Assert.assertTrue(isSame);
+		
+	}
+	
+	@Test
+	public void TestGetAccountsOfUserWithCancelled() throws InvalidClassException {
+		DataService ds = new DataService();
+		ds.loadBankAccounts("src/test/resources/Accounts.txt");
+		ds.loadUsers("src/test/resources/Users.txt");
+		
+		
+		BankAccount bacc1 = new BankAccount("C1", "customer1", 100f, "active");
+		BankAccount bacc5 = new BankAccount("C5","customer1",100f, "cancelled");
+		JointAccount jacc1 = new JointAccount("J1","customer1","customer2",100f,"active");
+		JointAccount jacc2 = new JointAccount("J2","customer1","customer3",100f,"active");
+		
+		
+		ArrayList<BankAccount> foundAccounts = ds.getAccountsOfUser("customer1", true);
+		BankAccount accs[] = {bacc1, bacc5, jacc1, jacc2};
+		
+		System.out.println("(WithCancelled)Found accounts of customer1: " + foundAccounts);
+		
+		boolean isSame = true;
+		for(int i = 0; i < accs.length; i++) {
+			if(!accs[i].equals(foundAccounts.get(i))) {
+				isSame = false;
+			}
+		}
+		Assert.assertTrue(isSame);
+		
+	}
+	
+	//Given the initial data, createAccountApplication should create a specific application while not causing other changes in the applications list.
+	@Test
+	public void TestCreateAccountApplication() {
+		DataService ds = new DataService();
+		ds.loadApplications("src/test/resources/Applications.txt");
+		ds.loadNumAccounts("src/test/resources/IDCounts.txt");
+		
+		ds.createAccountApplication("customer6");
+		
+		BankAccount appl1 = new BankAccount("C6", "customer1", 100f, "pending");
+		BankAccount appl2 = new BankAccount("C7", "customer2", 100f, "pending");
+		BankAccount appl3 = new JointAccount("J5", "customer3", "customer4", 100f, "pending");
+		BankAccount appl4 = new JointAccount("J6", "customer4", "customer3", 100f, "pending");
+		BankAccount expectedAccount = new BankAccount("C8","customer6");
+		
+		BankAccount expectedAccounts[] = {appl1,appl2,appl3,appl4, expectedAccount};
+		
+		boolean isSame = true;
+		for(int i = 0; i < expectedAccounts.length; i++) {
+			if(!expectedAccounts[i].equals(ds.getApplications().get(i))) {
+				isSame = false;
+			}
+		}
+		Assert.assertTrue(isSame);
+		
+	}
+	
+	
 	
 }

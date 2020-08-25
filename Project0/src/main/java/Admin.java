@@ -124,7 +124,6 @@ public class Admin extends StaffUser {
 	
 	if(params.length != 2) {
 		System.out.println("Invalid command.");
-		in.close();
 		return false;
 	}
 	
