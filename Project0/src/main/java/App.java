@@ -5,7 +5,14 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import java.util.*;
 //import org.apache.
-
+/**
+ * Run SetupStaff.java to reset users and reinitialize employee/admins if the app crashes on startup.
+ * 
+ * EMPLOYEE CREDENTIALS: employee password
+ * ADMIN CREDENTIALS: jfaber password
+ * 				  OR: jwarren password
+ * 
+ */
 public class App {
 
 
@@ -346,7 +353,14 @@ public class App {
 		}
 	}
 
-	
+	/**
+	 * Run SetupStaff.java to reset users and reinitialize employee/admins if the app crashes on startup.
+	 * 
+	 * EMPLOYEE CREDENTIALS: employee password
+	 * ADMIN CREDENTIALS: jfaber password
+	 * 				  OR: jwarren password
+	 * 
+	 */
 	public static void main(String[] args) throws InvalidClassException {
 		Scanner console= new Scanner(System.in);
 		Logger log = LogManager.getLogger(App.class);
