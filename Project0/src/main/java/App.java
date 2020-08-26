@@ -86,7 +86,7 @@ public class App {
 		return output;
 	}
 
-	public static boolean register(DataService ds, Scanner in) {
+	public static boolean register(DataService ds, Scanner in, Logger log) {
 		//Scanner in = new Scanner(System.in);
 		System.out.println("At any time, type 'cancel' to cancel registration.");
 		String newUsername = null;
@@ -165,9 +165,10 @@ public class App {
 				}
 			}
 		}
-		System.out.println("Thank you for registering with Faber and Warren, " + newUsername + "! You may now log in.");
+		System.out.println("Thank you for registering with Faber and Warren, " + newLegalName + "! You may now log in.");
 		ds.createCustomer(newUsername, newPassword, newLegalName, newAge);
 		ds.saveUsers("src/main/resources/Users.txt");
+		log.info("Customer " + newUsername + " has registered");
 		return true;
 	}//end register
 
@@ -203,7 +204,8 @@ public class App {
 		}
 	}
 
-	public static void customerMenu(User currentUser, DataService ds, Scanner in) throws InvalidClassException {
+	public static void customerMenu(User currentUser, DataService ds, Scanner in, Logger log) throws InvalidClassException {
+		log.info("Customer " + currentUser.getUsername() + " has logged in");
 		Integer userInput = null;
 		boolean hasQuit = false;
 
@@ -213,31 +215,33 @@ public class App {
 			userInput = validateInputInteger(in);
 			switch(userInput) {
 			case 1://Apply for account
-				if(((Customer) currentUser).applyForAccount(ds, in)) {
+				if(((Customer) currentUser).applyForAccount(ds, in, log)) {
 					ds.saveApplications("src/main/resources/Applications.txt");
 					ds.saveNumAccounts("src/main/resources/IDCounts.txt");
 				}
 				break;
 			case 2://View accounts
 				System.out.println(((Customer) currentUser).viewAccounts(ds));
+				log.info("Customer " + currentUser.getUsername() + " has viewed their accounts");
 				break;
 			case 3://Withdraw from account
-				if(((Customer) currentUser).withdrawFromAccount(ds, in)) {
+				if(((Customer) currentUser).withdrawFromAccount(ds, in, log)) {
 					ds.saveBankAccounts("src/main/resources/Accounts.txt");
 				}
 				break;
 			case 4://Deposit to account
-				if(((Customer) currentUser).depositToAccount(ds, in)) {
+				if(((Customer) currentUser).depositToAccount(ds, in, log)) {
 					ds.saveBankAccounts("src/main/resources/Accounts.txt");
 				}
 				break;
 			case 5://Transfer between accounts
-				if(((Customer) currentUser).transferBetweenAccounts(ds, in)) {
+				if(((Customer) currentUser).transferBetweenAccounts(ds, in, log)) {
 					ds.saveBankAccounts("src/main/resources/Accounts.txt");
 				}
 				break;
 			case 6://Quit
 				hasQuit = true;
+				log.info("Customer " + currentUser.getUsername() + " has logged out");
 				break;
 			default://Invalid input
 				break;
@@ -245,32 +249,36 @@ public class App {
 		}
 	}//end customerMenu
 
-	public static void employeeMenu(User currentUser, DataService ds, Scanner in) {
+	public static void employeeMenu(User currentUser, DataService ds, Scanner in, Logger log) {
+		log.info("Employee " + currentUser.getUsername() + " has logged in");
 		Integer userInput = null;
 		boolean hasQuit = false;
 
 		while(!hasQuit) {
-			System.out.println("[Employee Menu]\nAvailable actions:\n1:View all customers\n2:View customer info\n3:View applications\n4:Approve/Deny Application\n5:Quit");
+			System.out.println("[Employee Menu]\nAvailable actions:\n1: View all customers\n2: View customer info\n3: View applications\n4: Approve/Deny Application\n5:Quit");
 			System.out.print(currentUser.getUsername() + ">> ");
 			userInput = validateInputInteger(in);
 			switch(userInput) {
 			case 1://View all customers
 				System.out.println(((Employee) currentUser).viewAllCustomers(ds));
+				log.info("Employee " + currentUser.getUsername() + " viewed all customers");
 				break;
 			case 2://View customer info
-				((Employee) currentUser).viewCustomerInfo(ds, in);
+				((Employee) currentUser).viewCustomerInfo(ds, in, log);
 				break;
 			case 3://View Applications
 				System.out.println(((Employee) currentUser).viewAllApplications(ds));
+				log.info("Employee " + currentUser.getUsername() + " viewed all applications");
 				break;
 			case 4://Approve/Deny Application
-				if(((Employee) currentUser).ApproveOrDenyApplication(ds, in)) {
+				if(((Employee) currentUser).ApproveOrDenyApplication(ds, in, log)) {
 					ds.saveApplications("src/main/resources/Applications.txt");
 					ds.saveBankAccounts("src/main/resources/Accounts.txt");
 				}
 				break;
 			case 5://Quit
 				hasQuit = true;
+				log.info("Employee " + currentUser.getUsername() + " has logged out");
 				break;
 			default://Invalid input
 				break;
@@ -278,54 +286,58 @@ public class App {
 		}
 	}
 
-	public static void adminMenu(User currentUser, DataService ds, Scanner in) {
+	public static void adminMenu(User currentUser, DataService ds, Scanner in, Logger log) {
+		log.info("Admin " + currentUser.getUsername() + " has logged in");
 		Integer userInput = null;
 		boolean hasQuit = false;
 
 		while(!hasQuit) {
-			System.out.println("[Admin Menu]\nAvailable actions:\n1: View all customers\n2: View customer info \n3: View applications\n4: Aprove/deny application"
+			System.out.println("[Admin Menu]\nAvailable actions:\n1: View all customers\n2: View customer info \n3: View applications\n4: Approve/deny application"
 					+ "\n5: Withdraw from account\n6: Deposit to account\n7: Transfer between accounts\n8: Open/close account\n9: Quit");
 			System.out.print(currentUser.getUsername() + ">> ");
 			userInput = validateInputInteger(in);
 			switch(userInput) {
 			case 1://View all customers
 				System.out.println(((Admin) currentUser).viewAllCustomers(ds));
+				log.info("Admin " + currentUser.getUsername() + " viewed all customers");
 				break;
 			case 2://View customer info
-				((Admin) currentUser).viewCustomerInfo(ds, in);
+				((Admin) currentUser).viewCustomerInfo(ds, in, log);
 				break;
 			case 3://View applications
 				System.out.println(((Admin) currentUser).viewAllApplications(ds));
+				log.info("Admin " + currentUser.getUsername() + " viewed all applications");
 				break;
 			case 4://Approve/deny application
-				if(((Admin) currentUser).ApproveOrDenyApplication(ds, in)) {
+				if(((Admin) currentUser).ApproveOrDenyApplication(ds, in, log)) {
 				ds.saveApplications("src/main/resources/Applications.txt");
 				ds.saveBankAccounts("src/main/resources/Accounts.txt");
 				}
 				break;
 			case 5://Withdraw from account
-				if(((Admin) currentUser).withdrawFromAccount(ds, in)) {
+				if(((Admin) currentUser).withdrawFromAccount(ds, in, log)) {
 					ds.saveBankAccounts("src/main/resources/Accounts.txt");
 				}
 				break;
 			case 6://Deposit to account
-				if (((Admin) currentUser).depositToAccount(ds, in));
+				if (((Admin) currentUser).depositToAccount(ds, in, log));
 				{
 					ds.saveBankAccounts("src/main/resources/Accounts.txt");
 				}
 				break;
 			case 7://Transfer between accounts
-				if(((Admin) currentUser).transferBetweenAccounts(ds, in)) {
+				if(((Admin) currentUser).transferBetweenAccounts(ds, in, log)) {
 					ds.saveBankAccounts("src/main/resources/Accounts.txt");
 				}
 				break;
 			case 8://Open/close account
-			    if(((Admin) currentUser).openOrCloseAccount(ds,in)){
+			    if(((Admin) currentUser).openOrCloseAccount(ds,in, log)){
 					ds.saveBankAccounts("src/main/resources/Accounts.txt");
 				}
 				break;
 			case 9://Quit
 				hasQuit = true;
+				log.info("Admin " + currentUser.getUsername() + " has logged out");
 				break;
 			default:
 				break;
@@ -333,9 +345,6 @@ public class App {
 
 		}
 	}
-
-
-	
 
 	
 	public static void main(String[] args) throws InvalidClassException {
@@ -360,26 +369,27 @@ public class App {
 			System.out.print(">> ");
 			consoleInput = validateInputInteger(console);
 			switch(consoleInput) {
+			//On successful login, assign currentUser to a User and open a console method based on the class of the user
 			case 1://Login
 				currentUser = login(ds,console);
 				if(currentUser != null) {
 					if(currentUser instanceof Customer) {
-						customerMenu(currentUser, ds, console);
+						customerMenu(currentUser, ds, console, log);
 					}
 					else if(currentUser instanceof Employee) {
 						//Open Employee menu
-						employeeMenu(currentUser,ds,console);
+						employeeMenu(currentUser,ds,console, log);
 					}
 					else if(currentUser instanceof Admin) {
 						//Open Admin menu
-						adminMenu(currentUser,ds,console);
+						adminMenu(currentUser,ds,console, log);
 					}
 				}
-				//On successful login, assign currentUser to a User and open a console method based on the class of the user
+				
 				break;
 			case 2://Register
-				register(ds, console);
-				//On successful register, let them choose to login, register, or quit
+				register(ds, console, log);
+				//On successful register, return to main menu
 				break;
 			case 3://Quit
 				hasQuit = true;
@@ -387,10 +397,7 @@ public class App {
 			default://Invalid number
 				System.out.println("Invalid input. Please try again");
 				break;
-
 			}
-
-
 		}//end while !hasQuit
 
 		// === Code here runs after quitting the app

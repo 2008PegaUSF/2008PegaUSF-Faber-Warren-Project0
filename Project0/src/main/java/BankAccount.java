@@ -9,8 +9,8 @@ public class BankAccount implements Serializable {
 
 	
 	//Simple constructor to use when a new account is applied for
-	public BankAccount(String username, String ID) {
-		this.username = username;
+	public BankAccount(String ID, String user) {
+		this.username = user;
 		this.ID = ID;
 		balance = 0;
 		status = "pending";
@@ -22,11 +22,11 @@ public class BankAccount implements Serializable {
 		this.balance = balance;
 		this.status = status;
 	}
-	
+	//Sets the account's status to active
 	public void open() {
 		status = "active";
 	}
-	
+	//Sets the account's status to cancelled, marking it as closed
 	public void close() {
 		status = "cancelled";
 	}
@@ -51,12 +51,14 @@ public class BankAccount implements Serializable {
 		return status;
 	}
 
+	//Negative values are denied when setting the balance
 	public double setBalance(double d){
 		if (d>=0){
 		balance=d;
 		return balance;}
 		else return -1;	
 	}
+	//Negative values are denied for deposits
 	public double doDeposit(double d){
 		if (d>=0){
 			balance+=d;
@@ -66,7 +68,7 @@ public class BankAccount implements Serializable {
 			return -1;
 		}
 	}
-	
+	//Withdrawals are denied if the requested amount is negative or would result in an overdraw
 	public double doWithdrawal(double d){
 		if (balance-d >=0 && d >= 0){
 			balance-=d;
@@ -76,7 +78,8 @@ public class BankAccount implements Serializable {
 			return -1;
 		}
 	} 
-	
+	//Transfers are denied if the mount is negative or would cause an overdraw, or if the transfer is being made to the same account,
+	//	because we liveyth in a civilized society that doesn't allow something unholy like that.
 	public boolean doTransfer(double amount, BankAccount other) {
 		if (balance>=amount && amount > 0 && this != other){
 			balance-=amount;
@@ -88,7 +91,7 @@ public class BankAccount implements Serializable {
 			return false;
 		}
 	}
-	
+	//Primarily used for testing purposes as assertEquals does not work for these accounts.
 	public boolean equals(BankAccount other) {
 		return this.username.equals(other.getUsername()) && this.ID.equals(other.getID()) && this.balance == other.getBalance() && this.status.equals(other.getStatus());
 	}

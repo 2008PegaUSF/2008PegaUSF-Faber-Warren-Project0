@@ -41,6 +41,7 @@ public abstract class User implements Serializable {
 				 +"\nAge: " + age;
 	}
 
+	//Used in testing.
 	public boolean equals(User other) {
 		return this.username.equals(other.getUsername())
 				&& this.password.equals(other.getPassword())

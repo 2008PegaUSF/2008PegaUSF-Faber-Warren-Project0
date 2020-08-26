@@ -74,7 +74,8 @@ public class DataService {
 			e.printStackTrace();
 		}
 	}
-	//Saves an account to a file
+	
+	//Saves the number of BankAccounts and JointAccounts ever created to a file.
 	public void saveNumAccounts(String filepath) {
 		FileOutputStream fout;
 		ObjectOutputStream oout;
@@ -136,7 +137,7 @@ public class DataService {
 	}
 	
 	//Loads all users from a file.
-	//This method looks different from the ones that use instanceof because I was trying to understand a loading-related bug.
+	//This method looks different from the ones that use instanceof because I (Jacob) was trying to understand a loading-related bug.
 	/**Be sure to run SetupStaff.java to update the Employee/Admin classes if this function throws an error.*/
 	public void loadUsers(String filepath) {
 		
@@ -150,6 +151,8 @@ public class DataService {
 			}
 			oin = new ObjectInputStream(fin);
 			
+			//instanceof could be used here, just like the other methods, though the difference in efficiency doesn't matter much since this will likely
+			//be replaced by SQL work later and only uses small amounts of data for this project's context.
 			while(fin.available() > 0) {
 				Object nextUser = oin.readObject();
 				String userClass = nextUser.getClass().getSimpleName();
@@ -197,9 +200,6 @@ public class DataService {
 				if(nextAccount instanceof BankAccount) {
 					applications.add((BankAccount)nextAccount);
 				}
-				else if(nextAccount instanceof JointAccount) {
-					applications.add((JointAccount)nextAccount);
-				}
 				else {
 					System.out.println("Invalid object loaded from " + filepath);
 				}
@@ -234,10 +234,8 @@ public class DataService {
 			fout.close();
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -259,10 +257,8 @@ public class DataService {
 			fout.close();
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -302,11 +298,6 @@ public class DataService {
 					customerAccounts.add((BankAccount) currentAccount);
 				}
 			}
-			else if(currentAccount instanceof JointAccount) {
-				if(((JointAccount) currentAccount).getUsername().equals(username) && ((BankAccount) currentAccount).getStatus().equals("active") || includeInactive) {
-					customerAccounts.add((JointAccount) currentAccount);
-				}
-			}
 			else {
 				throw new InvalidClassException("Invalid object");
 			}
@@ -342,6 +333,7 @@ public class DataService {
 		return true;
 	}
 	
+	//Returns true if a username is available, or false if the name is taken.
 	public boolean isUsernameAvailable(String username) {
 		for(User u : users) {
 			if(username.equals(u.getUsername())) {
@@ -369,6 +361,7 @@ public class DataService {
 		return null;
 	}
 	
+	//Returns the account application with that given ID. Returns null if no account with that name was found.
 	public BankAccount getApplicationByID(String id) {
 		for(BankAccount application : applications) {
 			if(application.getID().equals(id))
@@ -377,6 +370,7 @@ public class DataService {
 		return null;
 	}
 	
+	//Moves a application from applications to accounts and sets it to active
 	public boolean approveApplication(String id) {
 		BankAccount toApprove = getApplicationByID(id);
 		if(toApprove == null) {
@@ -390,6 +384,7 @@ public class DataService {
 		}
 	}
 	
+	//Deletes an application. Side note: no need to lower the number of accounts made. IDs of deleted accounts are not relinquished to avoid confusion.
 	public boolean denyApplication(String id) {
 		BankAccount toDeny = getApplicationByID(id);
 		if(toDeny == null) {
