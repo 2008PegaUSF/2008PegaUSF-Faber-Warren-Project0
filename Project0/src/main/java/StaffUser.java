@@ -57,9 +57,9 @@ public class StaffUser extends User {
 					System.out.println(acc + " ");
 					if(++column % 5 == 0) {//On every fifth customer, start a new line
 						System.out.println("\n");
-						log.info(this.getClass().getSimpleName() + username + " looked up info on customer " + foundUser.getUsername());
 					}
 				}
+				log.info(this.getClass().getSimpleName() + username + " looked up info on customer " + foundUser.getUsername());
 			}
 			else {//Not a customer
 				System.out.println("That user is not a customer.");
@@ -72,7 +72,6 @@ public class StaffUser extends User {
 		}
 		
 	}
-
 
 	//returns a string providing the user with info on all applications
 	public String viewAllApplications(DataService ds) {

@@ -99,113 +99,183 @@ public class TestCases {
 	
 	//Test if an updated account balance was returned by the correct amount after a successful deposit
 	@Test
-	public void TestDepositAllow() {
+	public void TestDeposit_Allow() {
+		System.out.println("=== Test BankAccount: doDeposit: Allow positive value ===");
+		System.out.println("Deposit amount: 20.0");
+		System.out.println("Expected return value: 120.0");
 		BankAccount bac = new BankAccount("C0001","customer1",100f, "active");
-		Assert.assertEquals(120f, bac.doDeposit(20f),0f);
+		double result = bac.doDeposit(20f);
+		System.out.println("Actual return value: " + bac.getBalance()+"\n");
+		Assert.assertEquals(120f, result,0f);
 	}
 	
 	//Test if -1f was returned on a failed deposit
 	@Test
 	public void TestDepositDenyNegativeValue() {
+		System.out.println("=== Test BankAccount: doDeposit: Deny negative value ===");
+		System.out.println("Deposit amount: -10.0");
+		System.out.println("Expected return value: -1.0");
 		BankAccount bac = new BankAccount("C0001","customer1",100f, "active");
-		Assert.assertEquals(-1f, bac.doDeposit(-10f),0f);
+		double result = bac.doDeposit(-10f);
+		System.out.println("Actual return value: " + result+"\n");
+		Assert.assertEquals(-1f, result,0f);
 	}
 	
 	//Test if the correct amount was returned after a withdrawal
 	@Test
 	public void TestWithdrawAllow() {
-		BankAccount bac = new BankAccount("C0001","customer1",100f, "active");
-		Assert.assertEquals(50f, bac.doWithdrawal(50f),0f);
+		System.out.println("=== Test BankAccount: doWithdrawal: Allow affordable value ===");
+		System.out.println("Test account contains 100.0. Withdrawal amount: 50.0");
+		System.out.println("Expected return value: 50.0");
+		BankAccount bac = new BankAccount("C1","customer1",100f, "active");
+		double result = bac.doWithdrawal(50f);
+		System.out.println("Actual return value: " + result+"\n");
+		Assert.assertEquals(50f, result,0f);
 	}
 	
 	//Test if -1f is returned when there was an attempt to withdraw a negative value
 	@Test
 	public void TestWithdrawDenyNegativeValue() {
-		BankAccount bac = new BankAccount("C0001","customer1",100f, "active");
-		Assert.assertEquals(-1f, bac.doWithdrawal(-1f),0f);
+		System.out.println("=== Test BankAccount: doWithdrawal: Deny negative value ===");
+		System.out.println("Test account contains 100.0 Withdrawal amount: -1.0");
+		System.out.println("Expected return value: -1.0");
+		BankAccount bac = new BankAccount("C1","customer1",100f, "active");
+		double result = bac.doWithdrawal(-1f);
+		System.out.println("Actual return value: " + result+"\n");
+		Assert.assertEquals(-1f, result,0f);
 	}
 	
 	//Test if -1f is returned after an attempt to withdraw more than an account's available funds
 	@Test
 	public void TestWithdrawDenyOverdraw() {
-		BankAccount bac = new BankAccount("C0001","customer1",100f, "active");
-		Assert.assertEquals(-1f, bac.doWithdrawal(120f),0f);
+		System.out.println("=== Test BankAccount: doWithdrawal: overdraw value ===");
+		System.out.println("Test account contains 100.0 Withdrawal amount: 120.0");
+		System.out.println("Expected return value: -1.0");
+		BankAccount bac = new BankAccount("C1","customer1",100f, "active");
+		double result = bac.doWithdrawal(120f);
+		System.out.println("Actual return value: " + result+"\n");
+		Assert.assertEquals(-1f, result,0f);
 	}
 	
 	//Test if a transfer is approved given a proper amount to send
 	@Test
 	public void TestTransferAllow() {
-		BankAccount bac1 = new BankAccount("C0001","customer1",100f, "active");
-		BankAccount bac2 = new BankAccount("C0002","customer1",100f, "active");
-		Assert.assertTrue(bac1.doTransfer(50f, bac2));
+		System.out.println("=== Test BankAccount: doTransfer: allow affordable value ===");
+		System.out.println("Test account bac1's balance: 100.0 Transferring 50.0 to bac2");
+		System.out.println("Expected return value: true");
+		BankAccount bac1 = new BankAccount("C1","customer1",100f, "active");
+		BankAccount bac2 = new BankAccount("C2","customer1",100f, "active");
+		boolean result = bac1.doTransfer(50f, bac2);
+		System.out.println("Actual return value: " + result+"\n");
+		Assert.assertTrue(result);
 	}
 	
 	//Test if a transfer is denied after sending more than an account's available funds
 	@Test
 	public void TestTransferDenyInsufficientFunds() {
-		BankAccount bac1 = new BankAccount("C0001","customer1",100f, "active");
-		BankAccount bac2 = new BankAccount("C0002","customer1",100f, "active");
-		Assert.assertFalse(bac1.doTransfer(101f, bac2));
+		System.out.println("=== Test BankAccount: doTransfer: deny insufficient funds ===");
+		System.out.println("Test account bac1's balance: 100.0. Transferring 101.0 to bac2");
+		System.out.println("Expected return value: false");
+		BankAccount bac1 = new BankAccount("C1","customer1",100f, "active");
+		BankAccount bac2 = new BankAccount("C2","customer1",100f, "active");
+		boolean result = bac1.doTransfer(101f, bac2);
+		System.out.println("Actual return value: " + result+"\n");
+		Assert.assertFalse(result);
 	}
 	
 	//Test if a transfer is denied after sending a negative amount
 	@Test
 	public void TestTransferDenyNegativeAmount() {
-		BankAccount bac1 = new BankAccount("C0001","customer1",100f, "active");
-		BankAccount bac2 = new BankAccount("C0002","customer1",100f, "active");
-		Assert.assertFalse(bac1.doTransfer(-1f, bac2));
+		System.out.println("=== Test BankAccount: doTransfer: deny negative amount ===");
+		System.out.println("Test account bac1's balance: 100.0. Transferring -1.0 to bac2");
+		System.out.println("Expected return value: false");
+		BankAccount bac1 = new BankAccount("C1","customer1",100f, "active");
+		BankAccount bac2 = new BankAccount("C2","customer1",100f, "active");
+		boolean result = bac1.doTransfer(-1f, bac2);
+		System.out.println("Actual return value: " + result+"\n");
+		Assert.assertFalse(result);
 	}
 	
 	//Test if a transfer is denied when made to the same account
 	@Test
 	public void TestTransferDenySameAccount() {
-		BankAccount bac1 = new BankAccount("C0001","customer1",100f, "active");
-		Assert.assertFalse(bac1.doTransfer(1f, bac1));
+		System.out.println("=== Test BankAccount: doTransfer: deny negative amount ===");
+		System.out.println("Test account bac1's balance: 100.0. Transferring 101.0 to bac2");
+		System.out.println("Expected return value: false");
+		BankAccount bac1 = new BankAccount("C1","customer1",100f, "active");
+		boolean result = bac1.doTransfer(1f, bac1);
+		System.out.println("Actual return value: " + result+"\n");
+		Assert.assertFalse(result);
 	}
 	
 	//Test if the correct amount of money is given to the recipient of a transfer
 	@Test
 	public void TestTransferCorrectAmountSent() {
-		BankAccount bac1 = new BankAccount("C0001","customer1",100f, "active");
-		BankAccount bac2 = new BankAccount("C0002","customer1",100f, "active");
+		System.out.println("=== Test BankAccount: doTransfer: Correct amount sent ===");
+		System.out.println("Test the balance of account C2 after transfer");
+		System.out.println("Expected balance: 150.0");
+		BankAccount bac1 = new BankAccount("C1","customer1",100f, "active");
+		BankAccount bac2 = new BankAccount("C2","customer1",100f, "active");
 		bac1.doTransfer(50f, bac2);
 		Assert.assertEquals(150f, bac2.getBalance(),0f);
+		System.out.println("Actual Value: " +bac2.getBalance()+"\n");
 	}
 	
 	//Test if the correct amount of money is taken from the sender during a transfer
 	@Test
 	public void TestTransferCorrectAmountSubtracted() {
-		BankAccount bac1 = new BankAccount("C0001","customer1",100f, "active");
-		BankAccount bac2 = new BankAccount("C0002","customer1",100f, "active");
+		System.out.println("=== Test BankAccount: doTransfer: Correct amount subtracted ===");
+		System.out.println("Test the balance of account 1 after transfer if 50 dollars is sent");
+		System.out.println("Expected value: 50.0");
+		BankAccount bac1 = new BankAccount("C1","customer1",100f, "active");
+		BankAccount bac2 = new BankAccount("C2","customer1",100f, "active");
 		bac1.doTransfer(50f, bac2);
 		Assert.assertEquals(50f, bac1.getBalance(),0f);
+		System.out.println("Actual Value: " +bac1.getBalance()+"\n");
 	}
 	
 	//Test if no money was sent on a failed transaction
 	@Test
 	public void TestTransferNoMoneySent() {
-		BankAccount bac1 = new BankAccount("C0001","customer1",100f, "active");
-		BankAccount bac2 = new BankAccount("C0002","customer1",100f, "active");
+		System.out.println("=== Test BankAccount: doTransfer: No money Sent ===");
+		System.out.println("Test that if the money sent has no value the account value doesn't change");
+		System.out.println("Expected return value: 100.0");
+		BankAccount bac1 = new BankAccount("C1","customer1",100f, "active");
+		BankAccount bac2 = new BankAccount("C2","customer1",100f, "active");
 		bac1.doTransfer(-1f, bac2);
 		Assert.assertEquals(100f, bac2.getBalance(),0f);
+		System.out.println("Actual return value: " +bac2.getBalance()+"\n");
 	}
 	
 	//Test if no money was subtracted from the sender on a failed transaction
 	@Test
 	public void TestTransferNoMoneySubtracted() {
-		BankAccount bac1 = new BankAccount("C0001","customer1",100f, "active");
-		BankAccount bac2 = new BankAccount("C0002","customer1",100f, "active");
+		System.out.println("=== Test BankAccount: doTransfer: No money subtracted ===");
+		System.out.println("Test the balance after no money is subtracted from one account");
+		System.out.println("Expected result: 100.0");
+		BankAccount bac1 = new BankAccount("C1","customer1",100f, "active");
+		BankAccount bac2 = new BankAccount("C2","customer1",100f, "active");
 		bac1.doTransfer(-1f, bac2);
 		Assert.assertEquals(100f, bac1.getBalance(),0f);
+		System.out.println("Actual return value: " +bac1.getBalance()+"\n");
 	}
 	
-	// === DataService test methods ===
+	// === DataService test methods === ================================================
 	
 	//Test loaded accounts against initial saved data
 	@Test
 	public void TestLoadAccounts() {
+		
 		DataService ds = new DataService();
 		ds.loadBankAccounts("src/test/resources/Accounts.txt");
+		
+		System.out.println("=== Test DataService: load accounts ===");
+		System.out.println("Expected loaded accounts: C1 C2 C3 C4 C5 J1 J2 J3 J4");
+		String result = "";
+		for(BankAccount x : ds.getAccounts()) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual loaded accounts: " + result+"\n");
 		
 		BankAccount bacc1 = new BankAccount("C1", "customer1", 100f, "active");
 		BankAccount bacc2 = new BankAccount("C2", "customer2", 100f, "active");
@@ -235,6 +305,14 @@ public class TestCases {
 		DataService ds = new DataService();
 		ds.loadUsers("src/test/resources/Users.txt");
 		
+		System.out.println("=== Test DataService: load users ===");
+		System.out.println("Expected loaded users: customer1 customer2 customer3 customer4 employee1 admin1");
+		String result = "";
+		for(User x : ds.getUsers()) {
+			result += x.getUsername() + " ";
+		}
+		System.out.println("Actual loaded accounts: " + result+"\n");
+		
 		Customer cust1 = new Customer("customer1", "password1", "Guy One", 10);
 		Customer cust2 = new Customer("customer2", "password2", "Guy Two", 20);
 		Customer cust3 = new Customer("customer3", "password3", "Guy Three", 30);
@@ -259,6 +337,11 @@ public class TestCases {
 	public void TestLoadNumAccounts() {
 		DataService ds = new DataService();
 		ds.loadNumAccounts("src/test/resources/IDCounts.txt");
+		
+		System.out.println("=== Test DataService: load numbers of accounts created ===");
+		System.out.println("Expected loaded values: 7 6");
+		System.out.println("Actual loaded values: " + ds.getNumBankAccounts() + " " + ds.getNumJointAccounts()+"\n");
+
 		Assert.assertTrue(ds.getNumBankAccounts() == 7 && ds.getNumJointAccounts() == 6);
 	}
 	
@@ -267,6 +350,14 @@ public class TestCases {
 	public void TestLoadApplications() {
 		DataService ds = new DataService();
 		ds.loadApplications("src/test/resources/Applications.txt");
+		
+		System.out.println("=== Test DataService: load applications ===");
+		System.out.println("Expected loaded accounts: C6 C7 J5 J6");
+		String result = "";
+		for(BankAccount x : ds.getApplications()) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual loaded accounts: " + result+"\n");
 		
 		BankAccount appl1 = new BankAccount("C6", "customer1", 100f, "pending");
 		BankAccount appl2 = new BankAccount("C7", "customer2", 100f, "pending");
@@ -293,8 +384,16 @@ public class TestCases {
 		
 		ds1.loadBankAccounts("src/test/resources/Accounts.txt");
 		ds1.saveBankAccounts("src/test/resources/Accounts.txt");
-		
 		ds2.loadBankAccounts("src/test/resources/Accounts.txt");
+		
+		System.out.println("=== Test DataService: save accounts ===");
+		System.out.println("Expected loaded accounts: C1 C2 C3 C4 C5 J1 J2 J3 J4");
+		String result = "";
+		
+		for(BankAccount x : ds2.getAccounts()) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual loaded accounts: " + result+"\n");
 		
 		BankAccount bacc1 = new BankAccount("C1", "customer1", 100f, "active");
 		BankAccount bacc2 = new BankAccount("C2", "customer2", 100f, "active");
@@ -326,8 +425,15 @@ public class TestCases {
 		
 		ds1.loadUsers("src/test/resources/Users.txt");
 		ds1.saveUsers("src/test/resources/Users.txt");
-		
 		ds2.loadUsers("src/test/resources/Users.txt");
+		
+		System.out.println("=== Test DataService: save users ===");
+		System.out.println("Expected loaded users: customer1 customer2 customer3 customer4 employee1 admin");
+		String result = "";
+		for(User x : ds2.getUsers()) {
+			result += x.getUsername() + " ";
+		}
+		System.out.println("Actual loaded accounts: " + result+"\n");
 		
 		Customer cust1 = new Customer("customer1", "password1", "Guy One", 10);
 		Customer cust2 = new Customer("customer2", "password2", "Guy Two", 20);
@@ -336,7 +442,6 @@ public class TestCases {
 		Employee emp1 = new Employee("employee1", "Worker Man", "1234567895", 50);
 		Admin adm1 = new Admin("admin1", "passwordA", "Admin Boss", 60);
 		
-		System.out.println(ds2.getUsers());
 		
 		User[] users = {cust1, cust2, cust3, cust4, emp1, adm1};
 		boolean isSame = true;
@@ -356,8 +461,12 @@ public class TestCases {
 		
 		ds1.loadNumAccounts("src/test/resources/IDCounts.txt");
 		ds1.saveNumAccounts("src/test/resources/IDCounts.txt");
-		
 		ds2.loadNumAccounts("src/test/resources/IDCounts.txt");
+		
+		System.out.println("=== Test DataService: save numbers of accounts created ===");
+		System.out.println("Expected loaded values: 7 6");
+		System.out.println("Actual loaded values: " + ds2.getNumBankAccounts() + " " + ds2.getNumJointAccounts()+"\n");
+		
 		Assert.assertTrue(ds2.getNumBankAccounts() == 7 && ds2.getNumJointAccounts() == 6);
 	}
 	
@@ -369,8 +478,15 @@ public class TestCases {
 		
 		ds1.loadApplications("src/test/resources/Applications.txt");
 		ds1.saveApplications("src/test/resources/Applications.txt");
-		
 		ds2.loadApplications("src/test/resources/Applications.txt");
+		
+		System.out.println("=== Test DataService: load applications ===");
+		System.out.println("Expected loaded accounts: C6 C7 J5 J6");
+		String result = "";
+		for(BankAccount x : ds2.getApplications()) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual loaded accounts: " + result+"\n");
 		
 		BankAccount appl1 = new BankAccount("C6", "customer1", 100f, "pending");
 		BankAccount appl2 = new BankAccount("C7", "customer2", 100f, "pending");
@@ -403,7 +519,13 @@ public class TestCases {
 		ArrayList<BankAccount> foundAccounts = ds.getAccountsOfUser("customer1", false);
 		BankAccount accs[] = {bacc1, jacc1, jacc2};
 		
-		System.out.println("Found accounts of customer1: " + foundAccounts);
+		System.out.println("=== Test DataService: GetAccountsOfUser, no cancelled accounts ===");
+		System.out.println("Expected results: C1 J1 J2");
+		String result = "";
+		for(BankAccount x : foundAccounts) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual results: " + result+"\n");
 		
 		boolean isSame = true;
 		for(int i = 0; i < accs.length; i++) {
@@ -417,7 +539,7 @@ public class TestCases {
 	
 	//When getAccountsOfUser is run, accounts that are cancelled should be returned when IncludeInactive is true
 	@Test
-	public void TestGetAccountsOfUserWithCancelled() throws InvalidClassException {
+	public void TestGetAccountsOfUser_WithCancelled() throws InvalidClassException {
 		DataService ds = new DataService();
 		ds.loadBankAccounts("src/test/resources/Accounts.txt");
 		ds.loadUsers("src/test/resources/Users.txt");
@@ -432,7 +554,13 @@ public class TestCases {
 		ArrayList<BankAccount> foundAccounts = ds.getAccountsOfUser("customer1", true);
 		BankAccount accs[] = {bacc1, bacc5, jacc1, jacc2};
 		
-		System.out.println("(WithCancelled)Found accounts of customer1: " + foundAccounts);
+		System.out.println("=== Test DataService: GetAccountsOfUser, with cancelled accounts ===");
+		System.out.println("Expected results: C1 C5 J1 J2");
+		String result = "";
+		for(BankAccount x : foundAccounts) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual results: " + result+"\n");
 		
 		boolean isSame = true;
 		for(int i = 0; i < accs.length; i++) {
@@ -461,7 +589,13 @@ public class TestCases {
 		
 		BankAccount expectedAccounts[] = {appl1,appl2,appl3,appl4, expectedAccount};
 		
-		System.out.println("Retrieved applications: " + ds.getApplications());
+		System.out.println("=== Test DataService: Create single account application ===");
+		System.out.println("Expected results: C6 C7 J5 J6 C8");
+		String result = "";
+		for(BankAccount x : ds.getApplications()) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual results: " + result+"\n");
 		
 		boolean isSame = true;
 		for(int i = 0; i < expectedAccounts.length; i++) {
@@ -490,7 +624,13 @@ public class TestCases {
 		
 		BankAccount expectedAccounts[] = {appl1,appl2,appl3,appl4, expectedAccount};
 		
-		System.out.println("Retrieved applications: " + ds.getApplications());
+		System.out.println("=== Test DataService: Create joint account application ===");
+		System.out.println("Expected results: C6 C7 J5 J6 J7");
+		String result = "";
+		for(BankAccount x : ds.getApplications()) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual results: " + result+"\n");
 		
 		boolean isSame = true;
 		for(int i = 0; i < expectedAccounts.length; i++) {
@@ -506,7 +646,13 @@ public class TestCases {
 	public void TestIsUsernameAvailableTrue() {
 		DataService ds = new DataService();
 		ds.loadUsers("src/test/resources/Users.txt");
-		Assert.assertTrue(ds.isUsernameAvailable("namethatisnottaken"));
+		
+		System.out.println("=== Test isUsernameAvailable: username is available ===");
+		System.out.println("Expected result: true");
+		boolean result = ds.isUsernameAvailable("namethatisnottaken");
+		System.out.println("Actual result: " + result+"\n");
+		
+		Assert.assertTrue(result);
 	}
 
 	//isUsernameAvailable should return false when a name is already taken.
@@ -515,7 +661,12 @@ public class TestCases {
 		DataService ds = new DataService();
 		ds.loadUsers("src/test/resources/Users.txt");
 		
-		Assert.assertFalse(ds.isUsernameAvailable("customer1"));
+		System.out.println("=== Test isUsernameAvailable: username is not available ===");
+		System.out.println("Expected result: false");
+		boolean result = ds.isUsernameAvailable("customer1");
+		System.out.println("Actual result: " + result+"\n");
+		
+		Assert.assertFalse(result);
 	}
 	
 	//getUserByUsername should return a corresponding user if a user with that username exists.
@@ -526,6 +677,11 @@ public class TestCases {
 		
 		Customer cust1 = new Customer("customer1", "password1", "Guy One", 10);
 		
+		System.out.println("=== Test getUserByUsername: return correct user ===");
+		System.out.println("Expected result: true");
+		boolean result = ds.getUserByUsername("customer1").equals(cust1);
+		System.out.println("Actual result: " + result+"\n");
+		
 		Assert.assertTrue(ds.getUserByUsername("customer1").equals(cust1));
 	}
 	
@@ -534,19 +690,29 @@ public class TestCases {
 	public void testGetUserByUsernameNotFound() {
 		DataService ds = new DataService();
 		ds.loadUsers("src/test/resources/Users.txt");
-		Assert.assertNull(ds.getUserByUsername("NameThatDoesNotExistHere"));
+		
+		System.out.println("=== Test getUserByUsername: user not found ===");
+		System.out.println("Expected result: null");
+		Object result = ds.getUserByUsername("NameThatDoesNotExistHere");
+		System.out.println("Actual result: " + result+"\n");
+		
+		Assert.assertNull(result);
 	}
 	
 	//getAccountByID should return a specific BankAccount when given the corresponding ID.
 	@Test
-	public void testGetAccountByIDSingle() {
+	public void testGetAccountByID_Single() {
 		DataService ds = new DataService();
 		ds.loadBankAccounts("src/test/resources/Accounts.txt");
 		
 		BankAccount bacc1 = new BankAccount("C1", "customer1", 100f, "active");
 		
-		Assert.assertTrue(ds.getAccountByID("C1").equals(bacc1));
+		System.out.println("=== Test getccountByID: Return correct single account ===");
+		System.out.println("Expected result: true");
+		boolean result = ds.getAccountByID("C1").equals(bacc1);
+		System.out.println("Actual result: " + result+"\n");
 		
+		Assert.assertTrue(result);
 	}
 	
 	//getAccountByID should return a specific JointAccount when given the corresponding ID.
@@ -557,7 +723,11 @@ public class TestCases {
 		
 		JointAccount jacc1 = new JointAccount("J1","customer1","customer2",100f,"active");
 		
-		Assert.assertTrue(ds.getAccountByID("J1").equals(jacc1));
+		System.out.println("=== Test getAccountByID: Return correct joint account ===");
+		System.out.println("Expected result: true");
+		boolean result = ds.getAccountByID("J1").equals(jacc1);
+		System.out.println("Actual result: " + result+"\n");
+		Assert.assertTrue(result);
 		
 	}
 	
@@ -569,7 +739,11 @@ public class TestCases {
 		
 		BankAccount appl1 = new BankAccount("C6", "customer1", 100f, "pending");
 		
-		Assert.assertTrue(appl1.equals(ds.getApplicationByID("C6")));
+		System.out.println("Test getApplicationByID: Return correct single account ===");
+		System.out.println("Expected result: true");
+		boolean result = appl1.equals(ds.getApplicationByID("C6"));
+		System.out.println("Actual result: " + result+"\n");
+		Assert.assertTrue(result);
 	}
 	
 	//getApplicationByID should return a specific joint account application given the corresponding ID.
@@ -580,7 +754,11 @@ public class TestCases {
 		
 		BankAccount appl3 = new JointAccount("J5", "customer3", "customer4", 100f, "pending");
 		
-		Assert.assertTrue(appl3.equals(ds.getApplicationByID("J5")));
+		System.out.println("=== Test getApplicationByID: Return correct joint account ===");
+		System.out.println("Expected result: true");
+		boolean result = appl3.equals(ds.getApplicationByID("J5"));
+		System.out.println("Actual result: " + result+"\n");
+		Assert.assertTrue(result);
 	}
 	
 	//After an application is approved, the Accounts ArrayList should be properly updated.
@@ -607,7 +785,13 @@ public class TestCases {
 		
 		BankAccount expectedAccounts[] = {bacc1,bacc2,bacc3,bacc4,bacc5,jacc1,jacc2,jacc3,jacc4,appl1};
 		
-		System.out.println("(TestApproveApplication) Accounts: "+ds.getAccounts());
+		System.out.println("=== Test DataService: Approve application, accounts properly changed ===");
+		System.out.println("Expected results: C1 C2 C3 C4 C5 J1 J2 J3 J4 C6");
+		String result = "";
+		for(BankAccount x : ds.getAccounts()) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual results: " + result+"\n");
 		
 		boolean isSame = true;
 		for(int i = 0; i < expectedAccounts.length; i++) {
@@ -633,7 +817,13 @@ public class TestCases {
 		
 		BankAccount expectedAccounts[] = {appl2,appl3,appl4};
 		
-		System.out.println("(TestApproveApplication) Accounts: "+ds.getAccounts());
+		System.out.println("=== Test DataService: Approve application, applications properly changed ===");
+		System.out.println("Expected results: C7 J5 J6");
+		String result = "";
+		for(BankAccount x : ds.getApplications()) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual results: " + result+"\n");
 		
 		boolean isSame = true;
 		for(int i = 0; i < expectedAccounts.length; i++) {
@@ -653,13 +843,20 @@ public class TestCases {
 		
 		ds.denyApplication("C6");
 		
+		System.out.println("=== Test DataService: Deny applications, applications properly changed ===");
+		System.out.println("Expected results: C7 J5 J6");
+		String result = "";
+		for(BankAccount x : ds.getApplications()) {
+			result += x.getID() + " ";
+		}
+		System.out.println("Actual results: " + result+"\n");
+		
 		BankAccount appl2 = new BankAccount("C7", "customer2", 100f, "pending");
 		BankAccount appl3 = new JointAccount("J5", "customer3", "customer4", 100f, "pending");
 		BankAccount appl4 = new JointAccount("J6", "customer4", "customer3", 100f, "pending");
 		
 		BankAccount expectedAccounts[] = {appl2,appl3,appl4};
 		
-		System.out.println("(TestApproveApplication) Accounts: "+ds.getAccounts());
 		
 		boolean isSame = true;
 		for(int i = 0; i < expectedAccounts.length; i++) {

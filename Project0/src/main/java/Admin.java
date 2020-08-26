@@ -25,7 +25,7 @@ public class Admin extends StaffUser {
 			//finding the bank account among our data
 			if(foundAccount == null) {//No account with that ID found
 				System.out.println("No account with that ID was found.");
-				log.info("Admin " + username + "failed to deposit to an account - ID not found");
+				log.info("Admin " + username + " failed to deposit to an account - ID not found");
 				return false;				
 			}
 			//if the account is found entering the amount
@@ -36,12 +36,12 @@ public class Admin extends StaffUser {
 				//if the number is wrong, don't deposit
 				if(foundAccount.doDeposit(depositAmount) == -1) {
 					System.out.println("Invalid deposit amount.");
-					log.info("Admin " + username + "failed to deposit to an account - invalid deposit amount " + depositAmount);
+					log.info("Admin " + username + " failed to deposit to an account - invalid deposit amount " + depositAmount);
 					return true;
 				}
 				else {//and the kick is good!
 					System.out.println("Deposit completed. New account balance: " + foundAccount.getBalance());
-					log.info("Admin " + username + "deposited " + depositAmount + " into account " + foundAccount.getID());
+					log.info("Admin " + username + " deposited " + depositAmount + " into account " + foundAccount.getID());
 					return true;
 				}
 			}
@@ -56,7 +56,7 @@ public class Admin extends StaffUser {
 			//the account doesn't exist
 			if(ds.getAccountByID(s) == null) {//No account with that ID found
 				System.out.println("No account with that ID was found.");
-				log.info("Admin " + username + "failed to withdraw from an account - ID not found");
+				log.info("Admin " + username + " failed to withdraw from an account - ID not found");
 				return false;
 			}
 			else {//Account with that ID was found
@@ -66,12 +66,12 @@ public class Admin extends StaffUser {
 				//validation that the withdrawal is legal
 				if(foundAccount.doWithdrawal(withdrawalAmount) == -1) {
 					System.out.println("Invalid withdrawal amount.");
-					log.info("Admin " + username + "failed to withdraw from an account - invalid withdrawal amount " + withdrawalAmount);
+					log.info("Admin " + username + " failed to withdraw from an account - invalid withdrawal amount " + withdrawalAmount);
 					return false;
 				}
 				else {//its super effective
 					System.out.println("Withdraw completed. New account balance: " + foundAccount.getBalance());
-					log.info("Admin " + username + "withdrew " + withdrawalAmount + " from account " + foundAccount.getID());
+					log.info("Admin " + username + " withdrew " + withdrawalAmount + " from account " + foundAccount.getID());
 					return true;
 				}
 			}
@@ -85,14 +85,14 @@ public class Admin extends StaffUser {
 			BankAccount sender = ds.getAccountByID(s);
 			if(sender == null) {
 				System.out.println("That account does not exist.");
-				log.info("Admin " + username + "failed to make a transfer - sender account not found");
+				log.info("Admin " + username + " failed to make a transfer - sender account not found");
 				return false;
 			}
 			System.out.println("Enter an account to send money to:");
 			BankAccount recipient = ds.getAccountByID(in.nextLine());
 			if(recipient == null) {
 				System.out.println("That account does not exist.");
-				log.info("Admin " + username + "failed to make a transfer - recipient account not found");
+				log.info("Admin " + username + " failed to make a transfer - recipient account not found");
 				return false;
 			}
 			//alerting balances then sending the money
@@ -101,11 +101,12 @@ public class Admin extends StaffUser {
 			double transferAmount = validateInputDouble(in);
 			if(sender.doTransfer(transferAmount, recipient)) {//Your princess is in this castle
 				System.out.println("Transfer complete. Sender's new account balance: " +  sender.getBalance());
+				log.info("Admin " + username + " made a transfer between account " + sender.getID() + " and " + recipient.getID());
 				return true;
 			}
 			else {//Your princess is not in this castle
 				System.out.println("Invalid amount.");
-				log.info("Admin " + username + "failed to make a transfer between " + sender.getID() + " to " + recipient.getID() + " - invalid amount " + transferAmount);
+				log.info("Admin " + username + " failed to make a transfer between " + sender.getID() + " to " + recipient.getID() + " - invalid amount " + transferAmount);
 				return false;
 			}
 			
@@ -148,14 +149,14 @@ public class Admin extends StaffUser {
 	
 	if(params.length != 2) {
 		System.out.println("Incorrect number of arguments.");
-		log.info("Admin " + username + "failed to open or close an account - incorrect number of arguments");
+		log.info("Admin " + username + " failed to open or close an account - incorrect number of arguments");
 		return false;
 	}
 	//Check if the account exists or not before continuing
 	BankAccount toManage = ds.getAccountByID(params[1]);
 	if(toManage == null) {
 		System.out.println("Account not found.");
-		log.info("Admin " + username + "failed to open or close an account - account " + params[1] + " not found");
+		log.info("Admin " + username + " failed to open or close an account - account " + params[1] + " not found");
 		return false;
 	}
 	// open the account
